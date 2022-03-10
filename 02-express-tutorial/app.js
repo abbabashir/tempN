@@ -1,17 +1,16 @@
 const express = require('express')
 const app = express()
-let {people} = require('./data')
+
+const people = require('./routes/people')
+const auth = require('./routes/auth')
 
 app.use(express.static('./methods-public'))
 app.use(express.urlencoded({extended: false}))
 
-app.get('/api/people',(req,res) => {
-    res.status(200).json({success:true,data:people})
-})
+app.use(express.json())
 
-app.post('/login',(req,res) => {
-    res.send("POSTING YEAH")
-})
+app.use('/api/people',people)
+app.use('/login', auth)
 
 app.listen(5000, () => {
     console.log('server listening on port 5000');
